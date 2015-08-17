@@ -1,0 +1,26 @@
+{
+  "name": "medline-geo-graph-explore-client",
+  "version": "0.0.0",
+  "dependencies": {
+    "angular": "^1.3.0",
+    "bootstrap": "~3.3.5",
+    "angular-animate": "^1.3.0",
+    "angular-cookies": "^1.3.0",
+    "angular-resource": "^1.3.0",
+    "angular-route": "^1.3.0",
+    "angular-sanitize": "^1.3.0",
+    "angular-touch": "^1.3.0",
+    "d3": "~3.5.6",
+    "angular-leaflet-directive": "~0.8.6",
+    "ngUnderscore": "~0.1.1",
+    "angular-datamaps": "~0.1.2"
+  },
+  "devDependencies": {
+    "angular-mocks": "^1.3.0"
+  },
+  "appPath": "app",
+  "moduleName": "medlineGeoGraphExploreClientApp",
+  "resolutions": {
+    "d3": "~3.5.6"
+  }
+}
