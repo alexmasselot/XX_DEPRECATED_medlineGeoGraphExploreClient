@@ -34,6 +34,9 @@ module.exports = function(config) {
       'bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js',
       'bower_components/underscore/underscore.js',
       'bower_components/ngUnderscore/ng-underscore.js',
+      'bower_components/topojson/topojson.js',
+      'bower_components/datamaps/dist/datamaps.all.js',
+      'bower_components/angular-datamaps/dist/angular-datamaps.min.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

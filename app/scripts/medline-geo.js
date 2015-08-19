@@ -17,10 +17,17 @@ angular
         };
 
         MedlineGeoClient.prototype.findByAffiliation= function(q){
-          return $http.get('http://localhost:9000/filter/'+q)
-              .then(function(response){
-                  return response.data;
-              });
+            return $http.get('http://localhost:9000/filter/'+q)
+                .then(function(response){
+                    return response.data;
+                });
+        };
+
+        MedlineGeoClient.prototype.findGeoLinks= function(q){
+            return $http.get('http://localhost:9000/geo-links/'+q)
+                .then(function(response){
+                    return response.data;
+                });
         };
 
         return new MedlineGeoClient();
