@@ -29,7 +29,13 @@ angular
                     return response.data;
                 });
         };
-
+        MedlineGeoClient.prototype.findCoordinateCount= function(q){
+            var args = q?{affiliation:q}:{};
+            return $http.get('http://localhost:9000/count-by-coords', args)
+                .then(function(response){
+                    return response.data;
+                });
+        };
         return new MedlineGeoClient();
     })
 ;

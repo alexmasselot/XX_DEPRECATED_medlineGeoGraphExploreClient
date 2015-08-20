@@ -17,7 +17,9 @@ angular
         'ngSanitize',
         'ngTouch',
         'map',
-        'datamaps'
+        'datamaps',
+        'ui.slider',
+        'thirdparties'
     ])
     .config(function ($routeProvider) {
         $routeProvider

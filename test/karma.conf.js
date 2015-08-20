@@ -37,6 +37,8 @@ module.exports = function(config) {
       'bower_components/topojson/topojson.js',
       'bower_components/datamaps/dist/datamaps.all.js',
       'bower_components/angular-datamaps/dist/angular-datamaps.min.js',
+      'bower_components/jquery-ui/ui/jquery-ui.js',
+      'bower_components/angular-ui-slider/src/slider.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

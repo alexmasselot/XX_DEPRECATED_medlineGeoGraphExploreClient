@@ -1,7 +1,26 @@
 'use strict';
 
-angular.module('map', ['medline-geo', 'ngUnderscore', 'datamaps'])
-    .controller('MapCtrl', function (_, $scope, medlineGeoClient) {
+angular.module('map', ['medline-geo', 'ngUnderscore', 'datamaps', 'thirdparties'])
+    .controller('MapCtrl', function (_, $scope, medlineGeoClient, d3) {
+        $scope.selected = {
+            year: 2000
+        };
+
+        var nbColors = 10;
+        var countCategories = {};
+        var countCategory = function (x) {
+            return 'COUNT_CAT_' + Math.round(x * nbColors);
+        };
+        _.map(_.range(nbColors + 1), function (i) {
+            var x = 1.0 * i / nbColors;
+            var c = d3.interpolateRgb('blue', 'red')(x);
+            countCategories[countCategory(x)] = c;
+        });
+        console.log(countCategories);
+
+        $scope.$watch('selected.year', function(year){
+            console.log(year);
+        })
 
         $scope.mapObject = {
             scope: 'world',
@@ -10,44 +29,39 @@ angular.module('map', ['medline-geo', 'ngUnderscore', 'datamaps'])
                 legendHeight: 60
             },
             geographyConfig: {
-                highlighBorderColor: '#EAA9A8',
-                highlighBorderWidth: 2
+                popupOnHover: false,
+                highlightOnHover: false
             },
-            fills: {
-                'HIGH': '#CC4731',
-                'MEDIUM': '#306596',
-                'LOW': '#667FAF',
-                'defaultFill': '#DDDDDD'
+            bubblesConfig: {
+                borderWidth: 0,
+                fillOpacity: 0.9,
             },
+            fills: _.extend({'defaultFill': '#DDDDDD'}, countCategories),
             data: {}
         };
 
         $scope.mapPlugins = {
-            arc: {strokeWidth: 7}
+            bubbles: {}
         };
         $scope.mapPluginData = {
-            arc: []
+            bubbles: []
         };
 
-        medlineGeoClient.findGeoLinks('Geneva').then(function (geoLinks) {
-            var arcOpts = {
-                strokeWidth: 0.2,
-                strokeColor: 'rgba(100, 10, 200, 0.4)',
-                greatArc: true
+        medlineGeoClient.findCoordinateCount('Geneva').then(function (coordCounts) {
+
+            var years = _.chain(coordCounts)
+                .pluck('year')
+                .uniq()
+                .value()
+                .sort();
+            $scope.data = {
+                years:years,
+                coordCounts: _.sort(coordCounts, function(cc){
+                    return cc.n;
+                })
             };
-            var arcs = _.map(geoLinks, function (link) {
-                return {
-                    origin: {
-                        latitude: link.coordsLinks._1._1,
-                        longitude: link.coordsLinks._1._2
-                    },
-                    destination: {
-                        latitude: link.coordsLinks._2._1,
-                        longitude: link.coordsLinks._2._2
-                    },
-                    options: arcOpts
-                };
-            });
+
+
 
             //.map(function (cit) {
             //    var nbCoords = cit.coordinates.length;
@@ -82,7 +96,28 @@ angular.module('map', ['medline-geo', 'ngUnderscore', 'datamaps'])
             //    };
             //})
             //.value();
-            $scope.mapPluginData.arc = arcs;
+            $scope.mapPluginData.bubbles = bubbles;
         });
+
+        $scope.showYear = function(year){
+            var yearCoordCounts = _.filter(coordCounts, function (cc) {
+                return cc.year === year;
+            });
+            var maxCount = Math.log(_.chain(yearCoordCounts).pluck('n').max().value());
+            var bubbles = _.chain(yearCoordCounts)
+                .sortBy(function (cc) {
+                    return cc.n;
+                })
+                .map(function (cc) {
+                    return {
+                        latitude: cc.roundedCoords._1,
+                        longitude: cc.roundedCoords._2,
+                        radius: 1.5,
+                        fillKey: countCategory(Math.log(cc.n) / maxCount),
+                        name: cc.n
+                    };
+                })
+                .value();
+        };
     })
 ;

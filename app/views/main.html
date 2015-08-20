@@ -1,9 +1,12 @@
 <div>
     <datamap width="1000" height="1000"
-            map="mapObject"
+             map="mapObject"
              plugins="mapPlugins"
              plugin-data="mapPluginData"
              zoomable="true"
             >
     </datamap>
+    <div style="width:200px; height:40px">
+        <h3>{{selected.year}}</h3><div ui-slider min="1970" max="2014" ng-model="selected.year"></div>
+    </div>
 </div>

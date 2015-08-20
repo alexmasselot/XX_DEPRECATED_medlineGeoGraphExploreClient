@@ -8,13 +8,13 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.css">
     <!-- endbuild -->
   </head>
   <body ng-app="medlineGeoGraphExploreClientApp">
@@ -93,6 +93,8 @@
     <script src="bower_components/topojson/topojson.js"></script>
     <script src="bower_components/datamaps/dist/datamaps.all.js"></script>
     <script src="bower_components/angular-datamaps/dist/angular-datamaps.min.js"></script>
+    <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
+    <script src="bower_components/angular-ui-slider/src/slider.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -101,6 +103,7 @@
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/map.js"></script>
     <script src="scripts/medline-geo.js"></script>
+    <script src="scripts/thirdparties.js"></script>
         <!-- endbuild -->
 </body>
 </html>
