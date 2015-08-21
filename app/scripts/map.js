@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('map', ['medline-geo', 'ngUnderscore', 'datamaps', 'thirdparties'])
-    .controller('MapCtrl', function (_, $scope, medlineGeoClient, d3) {
+    .controller('MapPointsCtrl', function (_, $scope, medlineGeoClient, d3) {
         $scope.selected = {
             year: 2000
         };
@@ -16,11 +16,13 @@ angular.module('map', ['medline-geo', 'ngUnderscore', 'datamaps', 'thirdparties'
             var c = d3.interpolateRgb('blue', 'red')(x);
             countCategories[countCategory(x)] = c;
         });
-        console.log(countCategories);
 
-        $scope.$watch('selected.year', function(year){
-            console.log(year);
-        })
+        $scope.$watch('selected.year', function () {
+            if($scope.data === undefined || $scope.data.coordCounts === undefined){
+                return;
+            }
+            $scope.showYear();
+        });
 
         $scope.mapObject = {
             scope: 'world',
@@ -34,7 +36,7 @@ angular.module('map', ['medline-geo', 'ngUnderscore', 'datamaps', 'thirdparties'
             },
             bubblesConfig: {
                 borderWidth: 0,
-                fillOpacity: 0.9,
+                fillOpacity: 0.9
             },
             fills: _.extend({'defaultFill': '#DDDDDD'}, countCategories),
             data: {}
@@ -55,13 +57,12 @@ angular.module('map', ['medline-geo', 'ngUnderscore', 'datamaps', 'thirdparties'
                 .value()
                 .sort();
             $scope.data = {
-                years:years,
-                coordCounts: _.sort(coordCounts, function(cc){
+                years: years,
+                coordCounts: _.sortBy(coordCounts, function (cc) {
                     return cc.n;
                 })
             };
-
-
+            $scope.showYear();
 
             //.map(function (cit) {
             //    var nbCoords = cit.coordinates.length;
@@ -96,12 +97,11 @@ angular.module('map', ['medline-geo', 'ngUnderscore', 'datamaps', 'thirdparties'
             //    };
             //})
             //.value();
-            $scope.mapPluginData.bubbles = bubbles;
         });
 
-        $scope.showYear = function(year){
-            var yearCoordCounts = _.filter(coordCounts, function (cc) {
-                return cc.year === year;
+        $scope.showYear = function () {
+            var yearCoordCounts = _.filter($scope.data.coordCounts, function (cc) {
+                return cc.year === $scope.selected.year;
             });
             var maxCount = Math.log(_.chain(yearCoordCounts).pluck('n').max().value());
             var bubbles = _.chain(yearCoordCounts)
@@ -118,6 +118,7 @@ angular.module('map', ['medline-geo', 'ngUnderscore', 'datamaps', 'thirdparties'
                     };
                 })
                 .value();
+            $scope.mapPluginData.bubbles = bubbles;
         };
     })
 ;
